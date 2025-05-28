@@ -1,8 +1,8 @@
 package com.ljs.demo.config;
 
+import com.ljs.demo.security.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -15,7 +15,8 @@ public class WebAuthorizationConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(httpBasic -> httpBasic
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint("MyApp")));
         return http.build();
     }
 }
