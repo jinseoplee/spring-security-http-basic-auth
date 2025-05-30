@@ -13,18 +13,28 @@ public class UserManagementConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        var userDetailsService = new InMemoryUserDetailsManager();
+        var userDetailsManager = new InMemoryUserDetailsManager();
 
-        // Creates a user with username "ljs", password "1234", and authority "read"
-        var user = User.withUsername("ljs")
+        var admin = User.withUsername("admin")
                 .password("1234")
-                .authorities("read")
+                .roles("ADMIN")
                 .build();
 
-        // Adds the user to the in-memory user details manager
-        userDetailsService.createUser(user);
+        var manager = User.withUsername("manager")
+                .password("1234")
+                .roles("MANAGER")
+                .build();
 
-        return userDetailsService;
+        var user = User.withUsername("user")
+                .password("1234")
+                .roles("USER")
+                .build();
+
+        userDetailsManager.createUser(admin);
+        userDetailsManager.createUser(manager);
+        userDetailsManager.createUser(user);
+
+        return userDetailsManager;
     }
 
     @Bean

@@ -13,10 +13,13 @@ public class WebAuthorizationConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/manager").hasAnyRole("ADMIN", "MANAGER")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(httpBasic -> httpBasic
                         .authenticationEntryPoint(new CustomAuthenticationEntryPoint("MyApp")));
+
         return http.build();
     }
 }
